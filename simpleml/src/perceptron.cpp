@@ -32,23 +32,61 @@ namespace simpleml {
     bias_ = bias;
   }
 
-  void Perceptron::train(const ClassificationDataset &data, unsigned max_iter) {
+  void Perceptron::original(const ClassificationDataset &data, unsigned max_iter) {
     if (!data.empty()) {
       unsigned err_count = 0;
       unsigned size = data.size();
-      typedef ClassificationDataset::const_iterator iterator;
+      // typedef ClassificationDataset::const_iterator iterator;
+      std::vector<ClassificationData> elements = data.elements();
+      typedef std::vector<ClassificationData>::iterator iterator;
       for (unsigned i = 0; i < max_iter; ++i) {
-        for (iterator iter = data.begin(); iter != data.end(); ++iter) {
-          double product = (dot_product<double>(weight_, iter->first) + bias_) * iter->second;
+        for (iterator iter = elements.begin(); iter != elements.end(); ++iter) {
+          double product = (dot_product<double>(weight_, iter->input()) + bias_) * iter->label();
           if (product <= 0) {
             ++err_count;
-            weight_ += learning_rate_ * iter->second * iter->first;
-            bias_ += learning_rate_ * static_cast<double>(iter->second);
+            weight_ += learning_rate_ * iter->label() * iter->input();
+            bias_ += learning_rate_ * static_cast<double>(iter->label());
           }
         }
         if (err_count == 0) break;
       }
     }
+  }
+
+  //void Perceptron::dual(const ClassificationDataset &data, unsigned max_iter) {
+  //  if (!data.empty()) {
+  //    unsigned err_count = 0;
+  //    unsigned size = data.size();
+  //    RealVector alpha;
+  //    alpha.reserve(size);
+  //    typedef ClassificationDataset::const_iterator iterator;
+  //    for (unsigned i = 0; i < max_iter; ++i) {
+  //      for (iterator iter = data.begin(); iter != data.end(); ++iter) {
+  //      }
+  //    }
+  //  }
+  //}
+
+  void Perceptron::train(const ClassificationDataset &data, unsigned max_iter) {
+    if (!data.empty()) {
+      unsigned err_count = 0;
+      unsigned size = data.size();
+      // typedef ClassificationDataset::const_iterator iterator;
+      std::vector<ClassificationData> elements = data.elements();
+      typedef std::vector<ClassificationData>::iterator iterator;
+      for (unsigned i = 0; i < max_iter; ++i) {
+        for (iterator iter = elements.begin(); iter != elements.end(); ++iter) {
+          double product = (dot_product<double>(weight_, iter->input()) + bias_) * iter->label();
+          if (product <= 0) {
+            ++err_count;
+            weight_ += learning_rate_ * iter->label() * iter->input();
+            bias_ += learning_rate_ * static_cast<double>(iter->label());
+          }
+        }
+        if (err_count == 0) break;
+      }
+    }
+
   }
 
   int Perceptron::predict(const RealVector &data) const {

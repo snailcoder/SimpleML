@@ -67,6 +67,21 @@ namespace simpleml {
 		   v1.begin(), std::plus<T>());
     return v1;
   }
+
+  template<class T>
+  std::vector<std::vector<T> > gram_matrix(const std::vector<std::vector<T> > &vset) {
+    std::vector<std::vector<T> > gram;
+    typedef typename std::vector<T>::const_iterator iterator;
+    for (iterator t_iter = vset.begin(); t_iter != vset.end(); ++t_iter) {
+      std::vector<T> row_result;
+      for (iterator iter = vset.begin(); iter != vset.end(); ++iter) {
+        T product = std::inner_product(t_iter->begin(), t_iter->end(), iter->begin(), 0);
+        row_result.push_back(product);
+      }
+      gram.push_back(row_result);
+    }
+    return gram;
+  }
 }
 
 #endif  // MATH_H_

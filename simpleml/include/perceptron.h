@@ -13,9 +13,13 @@ namespace simpleml {
     void set_weight(const RealVector &weight);
     double bias() const;
     void set_bias(double bias);
-    void train(const ClassificationDataset &data, unsigned max_iterations);
+    void train(const ClassificationDataset &data, unsigned max_iter);
     int predict(const RealVector &data) const;
+
    private:
+    //void dual(const ClassificationDataset &data, unsigned max_iter);
+    void original(const ClassificationDataset &data, unsigned max_iter);
+
     double learning_rate_;
     RealVector weight_;
     double bias_;
