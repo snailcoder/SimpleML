@@ -71,7 +71,7 @@ namespace simpleml {
   template<class T>
   std::vector<std::vector<T> > gram_matrix(const std::vector<std::vector<T> > &vset) {
     std::vector<std::vector<T> > gram;
-    typedef typename std::vector<T>::const_iterator iterator;
+    typedef typename std::vector<std::vector<T> >::const_iterator iterator;
     for (iterator t_iter = vset.begin(); t_iter != vset.end(); ++t_iter) {
       std::vector<T> row_result;
       for (iterator iter = vset.begin(); iter != vset.end(); ++iter) {

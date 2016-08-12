@@ -26,7 +26,7 @@ int main() {
   data.push_back(training_data3);
 
   ClassificationDataset training_dataset(data);
-  perceptron.train(training_dataset, 100);
+  perceptron.train(training_dataset, 100, 1);
   cout << perceptron.bias() << endl;
   RealVector perceptron_weight(perceptron.weight());
   for (RealVector::iterator iter = perceptron_weight.begin();
